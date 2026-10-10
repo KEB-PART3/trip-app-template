@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5c518" />
+    <title>The Weekend</title>
+    <link rel="icon" type="image/png" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="The Weekend" />
+    <script>
+      // ---------------------------------------------------------------------
+      // DEMO CLOCK
+      //
+      // Set DEMO_CLOCK to null to run on real time. That is what you want when
+      // building your own: the app's date-driven states advance by themselves
+      // as the dates in src/constants.js arrive — Sneak peek becomes Today,
+      // today's rail drops yesterday and never shows it again, and the last
+      // morning replaces Home with the Morning After page. No switches to flip.
+      //
+      // Left set, it winds the clock to a fixed moment so the app renders that
+      // day's state. Time still ticks forward from there, so countdowns are
+      // live rather than frozen. Useful values:
+      //   '2027-05-20T10:00:00-04:00'  three weeks out
+      //   '2027-05-31T16:20:00-04:00'  ten days out — countdown, Sneak peek
+      //   '2027-06-12T13:10:00-04:00'  the big day — Today rail, DONE/NOW/NEXT
+      //   '2027-06-13T08:30:00-04:00'  final morning — the Morning After
+      //   '2027-06-17T08:00:00-04:00'  after — the yearbook
+      // ---------------------------------------------------------------------
+      var DEMO_CLOCK = '2027-05-31T16:20:00-04:00';
+
+      // Skip the passphrase gate, the name picker and the install coach so the
+      // demo opens straight onto Home. Set to false to see that onboarding —
+      // all three still exist in src/pages/.
+      var SKIP_ONBOARDING = true;
+
+      (function () {
+        if (DEMO_CLOCK) {
+          var OFFSET = new Date(DEMO_CLOCK).getTime() - Date.now();
+          var D = Date;
+          function FakeDate() {
+            if (!(this instanceof FakeDate)) return new D(D.now() + OFFSET).toString();
+            if (arguments.length === 0) return new D(D.now() + OFFSET);
+            if (arguments.length === 1) return new D(arguments[0]);
+            return new D(arguments[0], arguments[1],
+                         arguments.length > 2 ? arguments[2] : 1,
+                         arguments.length > 3 ? arguments[3] : 0,
+                         arguments.length > 4 ? arguments[4] : 0,
+                         arguments.length > 5 ? arguments[5] : 0,
+                         arguments.length > 6 ? arguments[6] : 0);
+          }
+          FakeDate.prototype = D.prototype;
+          FakeDate.now = function () { return D.now() + OFFSET; };
+          FakeDate.parse = D.parse;
+          FakeDate.UTC = D.UTC;
+          window.Date = FakeDate;
+        }
+        if (SKIP_ONBOARDING) {
+          try {
+            if (!localStorage.getItem('ff-nick')) localStorage.setItem('ff-nick', 'Alex');
+            localStorage.setItem('ff-a2hs', '1');
+          } catch (e) {}
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

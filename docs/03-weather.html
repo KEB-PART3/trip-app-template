@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Weather Module — Build Instructions</title>
+<style>
+:root{
+  --gold:#f5c518; --gold-2:#ffd84a; --gold-3:#b8860b;
+  --bg:#0a0a0a; --bg-2:#14110a; --card:#1d1a12; --card-2:#272214; --line:#4d4227;
+  --text:#f2f0e6; --text-2:#d8d3c2; --muted:#928a72;
+  --red:#ff4d4d; --green:#6dd57a;
+  --v-storm:#8fb8ff; --v-hot:#ff7a4d; --v-rain:#9fd0ff; --v-nice:#6dd57a; --v-warm:var(--gold-2);
+  color-scheme: dark;
+}
+.lightframe{
+  --bg:#f6f1e2; --bg-2:#ede5cf; --card:#fffdf4; --card-2:#f5eeda; --line:#dcd2b6;
+  --text:#251e0d; --text-2:#4a4331; --muted:#6b6149;
+  --gold:#7f5e05; --gold-2:#7c5c07; --gold-3:#5f4605;
+  --v-storm:#2f5faf; --v-hot:#a3441c; --v-rain:#33648f; --v-nice:#1a6e34; --v-warm:#8f6a06;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:#0a0a0a; color:#f2f0e6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.6; font-size:15px;
+}
+.wrap{max-width:940px;margin:0 auto;padding:32px 20px 90px}
+h1{font-size:30px;line-height:1.2;margin:0 0 6px;letter-spacing:-0.5px}
+.sub{color:#928a72;margin:0 0 34px;font-size:14px}
+h2{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#f5c518;
+   margin:52px 0 6px;border-top:1px solid #2a2618;padding-top:26px}
+h3{font-size:16px;margin:26px 0 6px;color:#ffd84a}
+p{margin:10px 0;color:#d8d3c2}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.9em;
+  background:#1a1710;border:1px solid #2f2a1a;border-radius:5px;padding:1px 5px;color:#ffd84a}
+pre{background:#121009;border:1px solid #2f2a1a;border-radius:12px;padding:14px 16px;
+  overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12.5px;line-height:1.6;color:#d8d3c2}
+pre code{background:none;border:none;padding:0;color:inherit}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #2a2618;vertical-align:top}
+th{color:#928a72;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:7px;border:1px solid rgba(255,255,255,.15)}
+.note{background:#14110a;border:1px solid #4d4227;border-left:3px solid #f5c518;
+  border-radius:0 10px 10px 0;padding:12px 16px;margin:18px 0;color:#d8d3c2;font-size:14px}
+.note b{color:#ffd84a}
+
+/* ---- specimen chrome ---- */
+.spec-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0 8px}
+@media (max-width:760px){.spec-row{grid-template-columns:1fr}}
+.spec{border:1px solid #2a2618;border-radius:18px;overflow:hidden;background:#0a0a0a}
+.spec.lightframe{background:#f6f1e2}
+.spec-cap{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#928a72;
+  padding:9px 14px;border-bottom:1px solid #2a2618;background:#121009;font-weight:700}
+.spec.lightframe .spec-cap{color:#6b6149;background:#ede5cf;border-color:#dcd2b6}
+.phone{padding:16px;background:var(--bg)}
+
+/* ---- the actual component styles, verbatim from the app ---- */
+.card{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);
+  border-radius:16px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.35);color:var(--text)}
+.card-title{font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold);
+  font-size:12px;margin-bottom:10px}
+.weather-now{display:flex;align-items:center;gap:12px}
+.wn-emoji{font-size:40px;line-height:1}
+.wn-temp{font-size:40px;font-weight:900;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.wn-meta{display:flex;flex-direction:column;min-width:0}
+.wn-verdict{font-weight:900;font-size:17px}
+.wn-sub{color:var(--muted);font-size:12px;margin-top:2px}
+.weather-strip-label{margin:14px 0 8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.weather-strip-hint{color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:none}
+.weather-mini-note{margin:10px 0 0;color:var(--muted);font-size:11px}
+.weather-carousel{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 16px)/3);
+  gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 4px;
+  scroll-padding:0 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.weather-carousel::-webkit-scrollbar{display:none}
+.wcard{scroll-snap-align:start;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;
+  padding:10px 6px;text-align:center;font:inherit;color:var(--text);cursor:pointer}
+.wcard-dow{font-size:12px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:1px}
+.wcard-date{font-size:10px;color:var(--muted)}
+.wcard-emoji{font-size:28px;margin:5px 0 2px}
+.wcard-verdict{font-size:11px;font-weight:800;min-height:28px;display:flex;align-items:center;justify-content:center;line-height:1.15}
+.wcard-temps{margin-top:2px}
+.wcard-hi{font-weight:900;color:var(--gold-2);font-size:17px}
+.wcard-lo{color:var(--muted);font-size:14px;margin-left:6px}
+.wcard-pop{color:var(--v-rain);font-size:11px;margin-top:3px}
+.wcard-sel{border-color:var(--gold)!important;background:rgba(245,197,24,.08)}
+.hourly{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;margin-top:10px;
+  padding:10px 4px;background:var(--bg-2);border:1px solid var(--line);border-radius:12px}
+.hourly-slot{text-align:center}
+.hourly-hr{font-size:10px;font-weight:800;color:var(--muted)}
+.hourly-emoji{font-size:17px;margin:3px 0 1px;line-height:1}
+.hourly-temp{font-size:12px;font-weight:800;color:var(--text)}
+.hourly-pop{font-size:10px;color:var(--muted);min-height:13px}
+.hourly-pop.wet{color:var(--v-rain);font-weight:800}
+.lightframe .hourly-emoji,.lightframe .wcard-emoji{filter:drop-shadow(0 1px 1.5px rgba(37,30,13,.5))}
+.verdict-storm{color:var(--v-storm)} .verdict-hot{color:var(--v-hot)}
+.verdict-warm{color:var(--v-warm)} .verdict-rain{color:var(--v-rain)}
+.verdict-nice{color:var(--v-nice)} .verdict-meh{color:var(--muted)}
+.verdict-border-storm{border-color:rgba(143,184,255,.5)}
+.verdict-border-hot{border-color:rgba(255,122,77,.55)}
+.verdict-border-warm{border-color:rgba(255,216,74,.4)}
+.verdict-border-rain{border-color:rgba(159,208,255,.45)}
+.verdict-border-nice{border-color:rgba(109,213,122,.45)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Weather Module — Build Instructions</h1>
+<p class="sub">A phone-first forecast card for a dated event. Free data, no API key, two display states, one tap-to-expand interaction, and a colour system where a single classification drives both the text colour and the card trim. Everything on this page is rendered with the real component CSS — the specimens are the component, not pictures of it.</p>
+
+<div class="note">
+<b>The design brief in one line.</b> A group trip has one weather question — <i>“is the thing we planned going to suck?”</i> — so the card answers it in plain language first (a verdict phrase), shows the numbers second, and hides the hour-by-hour detail behind a tap. Everything below serves that ordering.
+</div>
+
+<h2>1 · Data source and contract</h2>
+
+<p>Open-Meteo. Free, no key, no attribution requirement, 16-day forecast horizon. One request returns current conditions, daily rollups and hourly rows together, so the whole card is a single fetch.</p>
+
+<pre><code>https://api.open-meteo.com/v1/forecast
+  ?latitude=36.1627&amp;longitude=-86.7816
+  &amp;current=temperature_2m,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m
+  &amp;daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max
+  &amp;hourly=temperature_2m,precipitation_probability,weather_code
+  &amp;temperature_unit=fahrenheit&amp;wind_speed_unit=mph&amp;precipitation_unit=inch
+  &amp;timezone=America/New_York&amp;forecast_days=16</code></pre>
+
+<p>Two things matter about the shape of the response. Daily arrays are parallel — <code>daily.time[i]</code> lines up with <code>daily.weather_code[i]</code> and the rest — so you zip them into day objects before rendering. Hourly <code>time</code> values are local ISO strings like <code>2027-06-12T14:00</code>, which means you can filter a day with a plain <code>startsWith(date)</code> and read the hour with <code>slice(11,13)</code>. No timezone maths anywhere in the client, because <code>timezone=</code> already localised it.</p>
+
+<p><b>Proxy it server-side with a TTL cache.</b> The client calls your own <code>/api/weather</code>, never Open-Meteo directly. That gives you one upstream call per TTL window instead of one per visitor per page-load, it keeps the browser off a third-party origin, and it gives you a place to degrade gracefully:</p>
+
+<pre><code>app.get('/api/weather', async (req, res) =&gt; {
+  const now = Date.now()
+  if (weatherCache.data &amp;&amp; now - weatherCache.at &lt; WEATHER_TTL) {
+    return res.json(weatherCache.data)
+  }
+  try {
+    const r = await fetch(url, { signal: AbortSignal.timeout(8000) })
+    if (!r.ok) throw new Error('open-meteo ' + r.status)
+    const data = await r.json()
+    weatherCache = { at: now, data }
+    res.json(data)
+  } catch (e) {
+    // Serve a stale cache if we have one; otherwise let the client fall back.
+    if (weatherCache.data) return res.json(weatherCache.data)
+    res.status(502).json({ error: 'weather unavailable' })
+  }
+})</code></pre>
+
+<p>Stale-on-error is the important half. A forecast from forty minutes ago is vastly better than an error state, and nobody can tell the difference. The client refetches on an interval (<code>30 * 60 * 1000</code>) with an <code>alive</code> flag so an unmounted component never calls <code>setState</code>.</p>
+
+<p>WMO weather codes become a label and an emoji through one lookup table with a fallback, so an unmapped code degrades to <code>['—', '🌡️']</code> instead of blank:</p>
+
+<pre><code>export const WEATHER_CODES = {
+  0:['Clear','☀️'], 1:['Mostly clear','🌤️'], 2:['Partly cloudy','⛅'], 3:['Overcast','☁️'],
+  45:['Fog','🌫️'], 48:['Fog','🌫️'],
+  51:['Light drizzle','🌦️'], 53:['Drizzle','🌦️'], 55:['Heavy drizzle','🌦️'],
+  61:['Light rain','🌧️'], 63:['Rain','🌧️'], 65:['Heavy rain','🌧️'],
+  66:['Freezing rain','🌧️'], 67:['Freezing rain','🌧️'],
+  71:['Light snow','🌨️'], 73:['Snow','🌨️'], 75:['Heavy snow','🌨️'], 77:['Snow grains','🌨️'],
+  80:['Showers','🌦️'], 81:['Showers','🌦️'], 82:['Heavy showers','⛈️'],
+  85:['Snow showers','🌨️'], 86:['Snow showers','🌨️'],
+  95:['Thunderstorm','⛈️'], 96:['Storm + hail','⛈️'], 99:['Storm + hail','⛈️']
+}
+export function describeWeather(code) {
+  return WEATHER_CODES[code] || ['—', '🌡️']
+}</code></pre>
+
+<h2>2 · The two display states</h2>
+
+<p>This is the part that answers “what did it look like seven days out?”. The card has exactly two modes and it picks between them by asking a single question: <b>are any of my event dates inside the forecast window yet?</b></p>
+
+<pre><code>const tripDays   = allDays.filter(d =&gt; TRIP_DATES.includes(d.date))
+const showingTrip = tripDays.length &gt; 0
+const days = showingTrip ? tripDays : allDays.slice(0, 7)</code></pre>
+
+<p>No countdown arithmetic, no “days until” variable, no manual switch to flip. The API’s own horizon decides. With <code>forecast_days=16</code>, the first event day appears in the response about fifteen days out, at which point the strip changes over on its own. Nothing else in the component branches on it.</p>
+
+<h3>State A — outside the window (a week or more out)</h3>
+
+<p>Label reads <b>THE NEXT WEEK</b>. The strip is <code>allDays.slice(0, 7)</code> — a rolling seven-day preview starting today. Underneath sits a one-line note that tells you when the real answer arrives, so the emptiness is explained rather than just absent.</p>
+
+<div class="spec-row">
+<div class="spec">
+  <div class="spec-cap">State A · dark · 7 days out</div>
+  <div class="phone"><div class="card" id="specA-dark"></div></div>
+</div>
+<div class="spec lightframe">
+  <div class="spec-cap">State A · light · 7 days out</div>
+  <div class="phone"><div class="card" id="specA-light"></div></div>
+</div>
+</div>
+
+<p class="sub" style="margin:4px 0 0">The strips above are live — swipe or drag them sideways. Three cards sit in view; the fourth peeking at the edge is what tells you there are more.</p>
+
+<h3>State B — inside the window (event days in range)</h3>
+
+<p>Label becomes <b>THE TRIP, DAY BY DAY</b>. The strip is now <i>only</i> the event days — four cards, not seven, not sixteen. Everything outside the trip is dropped, because once the trip is forecastable nobody cares what Tuesday looks like. The mini-note disappears, since its job is done.</p>
+
+<div class="spec-row">
+<div class="spec">
+  <div class="spec-cap">State B · dark · trip in range</div>
+  <div class="phone"><div class="card" id="specB-dark"></div></div>
+</div>
+<div class="spec lightframe">
+  <div class="spec-cap">State B · light · trip in range</div>
+  <div class="phone"><div class="card" id="specB-light"></div></div>
+</div>
+</div>
+
+<div class="note">
+<b>Why the same card does both.</b> The alternative — hide the module until the trip is close — costs you the whole pre-trip period, which is exactly when people are checking obsessively and have nothing to look at. A rolling week keeps the card alive and useful, and the transition to trip-mode happens silently one morning without anyone shipping anything.
+</div>
+
+<h3>Strip mechanics</h3>
+
+<table>
+<tr><th>Property</th><th>Value</th><th>Why</th></tr>
+<tr><td>Cards in view</td><td><code>grid-auto-columns: calc((100% - 16px) / 3)</code></td><td>Exactly three, with the fourth cut off at the edge. Three is a glanceable forecast; the clipped fourth is the only affordance needed to say “swipeable”.</td></tr>
+<tr><td>Snapping</td><td><code>scroll-snap-type: x mandatory</code> + <code>scroll-snap-align: start</code></td><td>Cards always land aligned. Nobody ever sees a half-scrolled strip.</td></tr>
+<tr><td>Edge bleed</td><td><code>margin: 0 -16px; padding: 2px 16px 4px</code></td><td>Cancels the parent card’s padding so the strip runs to the screen edge — that’s what makes it read as a native carousel rather than a boxed widget.</td></tr>
+<tr><td>Snap padding</td><td><code>scroll-padding: 0 16px</code></td><td><b>Required.</b> Snap positions ignore the container’s own padding; without this the first card snaps flush against the edge instead of sitting inside the gutter.</td></tr>
+<tr><td>Scrollbar</td><td><code>scrollbar-width: none</code> + <code>::-webkit-scrollbar{display:none}</code></td><td>Phone-first. The bar adds nothing and breaks the card’s bottom edge.</td></tr>
+</table>
+
+<h2>3 · The tap-to-expand hourly panel</h2>
+
+<p>One piece of state, one handler:</p>
+
+<pre><code>const [selDay, setSelDay] = useState(null)
+...
+&lt;button onClick={() =&gt; setSelDay(sel ? null : d.date)}&gt;</code></pre>
+
+<p>Which produces accordion behaviour without any accordion code:</p>
+
+<table>
+<tr><th>Gesture</th><th>Result</th></tr>
+<tr><td>Tap a closed day</td><td><code>selDay</code> becomes that date. The hourly panel appears below the strip. The tapped card gets the selected treatment.</td></tr>
+<tr><td>Tap the <i>same</i> day again</td><td><code>sel</code> is true, so it sets <code>null</code>. The panel disappears, the card returns to normal. This is the “click it again to resolve it” half — same target, no separate close control, no X to hunt for.</td></tr>
+<tr><td>Tap a <i>different</i> day</td><td>Straight swap. The panel stays open and its contents change in place; selection moves. There is never a moment with two days open or with the panel closing and reopening.</td></tr>
+</table>
+
+<div class="note">
+<b>The one structural decision that makes this work.</b> The hourly panel renders <i>after</i> the whole carousel — <code>&lt;Hourly data={data} date={selDay} /&gt;</code> is a sibling of the strip, not a child of a card. If you nest it inside the tapped card you get a horizontally-scrolling container trying to hold a full-width expanding panel, the strip’s layout fights you, and switching days animates as close-then-open. One panel, fixed position below the strip, contents swapped by the selected date: no layout shift in the strip at all, and the expansion always appears in the same place so your eye never has to find it.
+</div>
+
+<p>Try it — the strips below are wired with the real handler. Tap a day, tap it again, tap a different one:</p>
+
+<div class="spec-row">
+<div class="spec">
+  <div class="spec-cap">Interactive · dark · tap a day</div>
+  <div class="phone"><div class="card" id="specC-dark"></div></div>
+</div>
+<div class="spec lightframe">
+  <div class="spec-cap">Interactive · light · tap a day</div>
+  <div class="phone"><div class="card" id="specC-light"></div></div>
+</div>
+</div>
+
+<h3>Selected-card treatment</h3>
+
+<pre><code>.wcard-sel { border-color: var(--gold) !important; background: rgba(245,197,24,0.08); }</code></pre>
+
+<p>Two changes only: the border goes full brand-gold and the fill picks up an 8%-opacity gold wash. The <code>!important</code> is deliberate and load-bearing — it has to beat the verdict trim colour (section 5), which is set by a class of equal specificity. Selection outranks classification: while a card is open, its border means “this one”, not “stormy”.</p>
+
+<h3>What’s inside the panel</h3>
+
+<pre><code>const hr = Number(h.time[i].slice(11, 13))
+if (!h.time[i].startsWith(date)) continue
+if (hr &lt; 8 || hr % 2 !== 0) continue</code></pre>
+
+<p>Eight slots: 8A, 10A, 12P, 2P, 4P, 6P, 8P, 10P. Two-hour steps from 8am to 10pm, everything before 8am dropped. A full 24-row hour table is a data dump — this is one glance that answers the actual question, which is <i>“is the rain at tee time or after dark?”</i>. Each slot stacks four lines: hour label, condition emoji, temperature, precipitation chance.</p>
+
+<p>The hour formatter is compact on purpose — <code>8A</code>, <code>12P</code>, <code>2P</code> — because eight columns across a phone leaves roughly forty pixels each:</p>
+
+<pre><code>const fmtHr = hr =&gt; (hr === 12 ? '12P' : hr &lt; 12 ? hr + 'A' : (hr - 12) + 'P')</code></pre>
+
+<p>Precipitation gets a threshold rather than a gradient: at or above 40% the figure turns rain-blue and bold via <code>.hourly-pop.wet</code>; below that it stays muted grey. Scanning the row, your eye lands on the wet hours immediately. A continuous colour ramp would make you read all eight numbers to find the bad ones. Empty values render as an empty string inside a <code>min-height: 13px</code> box so rows never jump.</p>
+
+<p>The panel itself is styled as a recess, not a card: <code>--bg-2</code> fill, 1px <code>--line</code> border, 12px radius — one radius step tighter than the 14px day cards, which reads as nested. It’s visibly a drawer that opened underneath, not a second card competing with the strip.</p>
+
+<h2>4 · The verdict engine</h2>
+
+<p>The feature that makes the card feel like it has an opinion. Every day gets a plain-language phrase in place of — not in addition to — the usual condition label.</p>
+
+<pre><code>function verdictFor(key, code, heat, pop) {
+  let cat
+  if (code &gt;= 95 || (pop != null &amp;&amp; pop &gt;= 70))                 cat = 'storm'
+  else if (heat &gt;= 93)                                          cat = 'hot'
+  else if ((code &gt;= 51 &amp;&amp; code &lt;= 67) ||
+           (code &gt;= 80 &amp;&amp; code &lt;= 82) ||
+           (pop != null &amp;&amp; pop &gt;= 40))                          cat = 'rain'
+  else if (heat &gt;= 85)                                          cat = 'warm'
+  else if (code &lt;= 1)                                           cat = 'nice'
+  else                                                          cat = 'meh'
+  const list = VERDICTS[cat]
+  return { cat, text: list[hash(key) % list.length] }
+}</code></pre>
+
+<p><b>The order is the design.</b> It’s a priority cascade, not a scoring function: storms outrank heat, heat outranks rain, rain outranks merely-warm. A 95° thunderstorm day is a storm day. The card leads with the nastiest true thing about the day, which is how a person would describe it.</p>
+
+<table>
+<tr><th>Category</th><th>Fires when</th><th>Phrase pool</th></tr>
+<tr><td><b>storm</b></td><td>WMO code ≥ 95, or precip chance ≥ 70%</td><td>Bring the jacket · Ark weather · Biblical · Poncho o’clock · Gonna get wet</td></tr>
+<tr><td><b>hot</b></td><td>heat ≥ 93°F</td><td>Properly hot · Scorcher · Shade weather · Surface of the sun</td></tr>
+<tr><td><b>rain</b></td><td>code 51–67 or 80–82, or precip ≥ 40%</td><td>Soggy · Damp and grumpy · Umbrella day</td></tr>
+<tr><td><b>warm</b></td><td>heat ≥ 85°F</td><td>Toasty · A warm one · Shirt-sticking weather</td></tr>
+<tr><td><b>nice</b></td><td>code ≤ 1 (clear / mostly clear)</td><td>Chef’s kiss · Actually perfect · Golf weather · Patio weather</td></tr>
+<tr><td><b>meh</b></td><td>everything else</td><td>Grey but fine · Meh skies · <i>[your city] doing [your city] things</i></td></tr>
+</table>
+
+<p><code>heat</code> is “the temperature that matters for <i>is this nasty</i>” — apparent (feels-like) temperature for the current-conditions row, daily high for the forecast cards. Rewrite the phrase pools in your own voice; the thresholds are the only part worth copying literally, and even those want a nudge for a different climate. In a dry climate the hot threshold moves up; in a mild one 85 isn’t warm.</p>
+
+<h3>Deterministic phrase selection</h3>
+
+<pre><code>function hash(str) {
+  let h = 0
+  for (let i = 0; i &lt; str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0
+  return Math.abs(h)
+}
+// ...
+list[hash(key) % list.length]</code></pre>
+
+<p><b>Do not use <code>Math.random()</code> here.</b> The key is the date string, so a given day always draws the same phrase. Without this the card reshuffles its jokes on every React re-render — scroll away, come back, Saturday is now “Biblical” instead of “Ark weather”. That reads as a bug to the user and destroys the illusion that the app has a considered opinion. Same input, same output, every render, every device.</p>
+
+<h2>5 · Colour coordination</h2>
+
+<p>The rule, and there is only one: <b>a single classification drives every colour decision.</b> <code>verdictFor</code> returns a <code>cat</code> string, and both class names are built from it — nothing else in the component picks a colour.</p>
+
+<pre><code>/* forecast card: category → border trim */
+&lt;button className={'wcard verdict-border-' + v.cat + (sel ? ' wcard-sel' : '')}&gt;
+
+/* current conditions: category → text colour */
+&lt;div className={'wn-verdict verdict-' + nowVerdict.cat}&gt;{nowVerdict.text}&lt;/div&gt;</code></pre>
+
+<p>The two rows use the category differently on purpose. The <b>right-now line</b> is a single statement with room to shout, so the phrase itself is coloured — 17px, weight 900, full verdict hue. The <b>forecast cards</b> keep their phrase in plain <code>--text</code> and carry the colour in the border instead: seven coloured phrases in a row at 11px is confetti, and the border says the same thing at a glance without asking you to read anything. One category, one colour, applied where it reads best. There’s no second lookup to keep in sync, and adding a category means adding two adjacent CSS rules.</p>
+
+<table id="colour-table">
+<tr><th>Category</th><th>Dark hue</th><th>Light hue</th><th>Border trim (both themes)</th><th>Read as</th></tr>
+<tr><td><b>storm</b></td><td><span class="swatch" style="background:#8fb8ff"></span><code>#8fb8ff</code></td><td><span class="swatch" style="background:#2f5faf"></span><code>#2f5faf</code></td><td><code>rgba(143,184,255,0.50)</code></td><td>cold front blue</td></tr>
+<tr><td><b>hot</b></td><td><span class="swatch" style="background:#ff7a4d"></span><code>#ff7a4d</code></td><td><span class="swatch" style="background:#a3441c"></span><code>#a3441c</code></td><td><code>rgba(255,122,77,0.55)</code></td><td>scorch orange</td></tr>
+<tr><td><b>warm</b></td><td><span class="swatch" style="background:#ffd84a"></span><code>#ffd84a</code></td><td><span class="swatch" style="background:#8f6a06"></span><code>#8f6a06</code></td><td><code>rgba(255,216,74,0.40)</code></td><td>brand gold</td></tr>
+<tr><td><b>rain</b></td><td><span class="swatch" style="background:#9fd0ff"></span><code>#9fd0ff</code></td><td><span class="swatch" style="background:#33648f"></span><code>#33648f</code></td><td><code>rgba(159,208,255,0.45)</code></td><td>pale water blue</td></tr>
+<tr><td><b>nice</b></td><td><span class="swatch" style="background:#6dd57a"></span><code>#6dd57a</code></td><td><span class="swatch" style="background:#1a6e34"></span><code>#1a6e34</code></td><td><code>rgba(109,213,122,0.45)</code></td><td>go-green</td></tr>
+<tr><td><b>meh</b></td><td><span class="swatch" style="background:#928a72"></span><code>--muted</code></td><td><span class="swatch" style="background:#6b6149"></span><code>--muted</code></td><td><b>none</b></td><td>body-text grey</td></tr>
+</table>
+
+<p>Three deliberate choices in that table.</p>
+
+<p><b>Borders are the same hue at 40–55% alpha, not a separate palette.</b> The trim is a quiet echo of the label — enough to make the strip’s shape legible while scrolling past, never loud enough to compete with the text it’s repeating. One hue per category, two intensities.</p>
+
+<p><b><code>meh</code> gets no border rule at all</b>, so it keeps the default <code>--line</code>. It’s the only category where the absence is the message: a grey nothing-day has nothing to flag, and flagging it would flatten the signal on the days that do. If every card is trimmed, no card is trimmed.</p>
+
+<p><b>Light mode is re-inked, not inverted.</b> The same semantic colours get genuinely different hex values — dark mode’s <code>#8fb8ff</code> storm blue has roughly 1.4:1 contrast on cream, so light mode uses <code>#2f5faf</code> instead. Every light value is chosen to clear WCAG AA (4.5:1 for small text) against <code>#f6f1e2</code>. The category names stay identical; only the values behind them change, so no component code knows which theme is active.</p>
+
+<p>One extra light-mode fix, easy to miss: emoji glyphs wash out on cream, so they get their edges re-inked.</p>
+
+<pre><code>html[data-theme='light'] .hourly-emoji,
+html[data-theme='light'] .wcard-emoji {
+  filter: drop-shadow(0 1px 1.5px rgba(37, 30, 13, 0.5));
+}</code></pre>
+
+<p>Sun and cloud glyphs are the sky-story at a glance — the whole point of the strip — and on a pale background a yellow sun on white essentially disappears. A soft dark shadow restores the silhouette without tinting the glyph.</p>
+
+<h3>Non-verdict colour in the card</h3>
+
+<p>Temperature highs use brand gold (<code>--gold-2</code>) with <code>font-variant-numeric: tabular-nums</code> so digits don’t jitter between renders. Lows use <code>--muted</code> at a smaller size — present, subordinate, never scanned first. Daily precipitation chance uses <code>--v-rain</code> regardless of category, because 💧 40% means the same thing on a hot day as on a stormy one. That’s the one place a colour is <i>not</i> verdict-driven, and it’s intentional: it’s a measurement, not a judgement.</p>
+
+<h2>6 · Layout order</h2>
+
+<p>Top to bottom, and the order is doing work:</p>
+
+<table>
+<tr><th>#</th><th>Element</th><th>Job</th></tr>
+<tr><td>1</td><td><code>.card-title</code> — 🌡️ [City] weather</td><td>Gold, 12px, uppercase, 1.2px tracking. Matches every other card header in the app.</td></tr>
+<tr><td>2</td><td><code>RIGHT NOW</code> strip label</td><td>Gold, 11px, 2px tracking. Section divider inside the card.</td></tr>
+<tr><td>3</td><td><code>.weather-now</code></td><td>40px emoji + 40px gold temperature + verdict + a thin grey line of label / feels-like / humidity. Big numbers, small detail.</td></tr>
+<tr><td>4</td><td>Strip label + hint</td><td>“THE NEXT WEEK” or “THE TRIP, DAY BY DAY”, with <code>· tap a day for hourly</code> appended in muted non-uppercase — the affordance lives in the label, costing zero extra vertical space.</td></tr>
+<tr><td>5</td><td><code>.weather-carousel</code></td><td>The day cards.</td></tr>
+<tr><td>6</td><td><code>&lt;Hourly&gt;</code></td><td>Nothing, or the expanded panel. Sibling of the strip.</td></tr>
+<tr><td>7</td><td><code>.weather-mini-note</code></td><td>State A only: “Jun 10–13 forecast drops in about two weeks out.”</td></tr>
+</table>
+
+<p>Inside a day card the vertical order is day-of-week → date → emoji → verdict → hi/lo → precip. Identity first, picture second, opinion third, numbers last. The verdict slot carries <code>min-height: 28px</code> with flex centring so one-line and two-line phrases produce identical card heights — without it, “Toasty” next to “Shirt-sticking weather” gives you a ragged strip.</p>
+
+<h2>7 · Failure and loading states</h2>
+
+<p>Three states, and the fallback is the one worth stealing. Loading shows a single muted line (<i>“Checking the skies…”</i>) — no skeleton, because the card is short enough that a skeleton is more visual noise than the content. If the fetch fails and there’s no cached data, the card renders hardcoded prose about what that place is typically like at that time of year: “mid-August in the city is hot and humid, highs around 90, afternoon thunderstorms are common.” Always true, never wrong, infinitely better than an error. And if data ever arrives, it simply replaces it.</p>
+
+<h2>8 · Porting checklist</h2>
+
+<table>
+<tr><th>Step</th><th>What to change</th></tr>
+<tr><td>1</td><td>Latitude / longitude / <code>timezone</code> in the proxy URL.</td></tr>
+<tr><td>2</td><td>Your event dates as an array of <code>YYYY-MM-DD</code> strings (the <code>TRIP_DATES</code> equivalent). This is the <i>only</i> thing that drives the state switch.</td></tr>
+<tr><td>3</td><td>Phrase pools — rewrite entirely in your own voice. Keep 3–5 per category so the hash has something to pick from.</td></tr>
+<tr><td>4</td><td>Thresholds (93 / 85 / 70% / 40%) if your climate differs.</td></tr>
+<tr><td>5</td><td>The six verdict colours in both themes. Keep the semantic names; check the light values against your own background for AA.</td></tr>
+<tr><td>6</td><td>The fallback prose for your place and season.</td></tr>
+<tr><td>7</td><td>Units — drop the <code>temperature_unit</code> / <code>wind_speed_unit</code> / <code>precipitation_unit</code> params for metric, and change <code>fmtHr</code> to 24-hour.</td></tr>
+</table>
+
+<div class="note">
+<b>Five things not to change.</b> Deterministic phrase selection (never <code>Math.random()</code>). The hourly panel as a sibling of the strip, not a child of a card. <code>scroll-padding</code> matching the negative margin. One category driving both text and border. And <code>meh</code> getting no border.
+</div>
+
+<h2>9 · Complete CSS</h2>
+
+<pre><code>/* ---- tokens: dark ---- */
+:root {
+  --gold:#f5c518; --gold-2:#ffd84a;
+  --bg:#0a0a0a; --bg-2:#14110a; --card:#1d1a12; --card-2:#272214; --line:#4d4227;
+  --text:#f2f0e6; --text-2:#d8d3c2; --muted:#928a72;
+  --v-storm:#8fb8ff; --v-hot:#ff7a4d; --v-rain:#9fd0ff; --v-nice:#6dd57a; --v-warm:var(--gold-2);
+}
+/* ---- tokens: light (re-inked, not inverted) ---- */
+html[data-theme='light'] {
+  --bg:#f6f1e2; --bg-2:#ede5cf; --card:#fffdf4; --card-2:#f5eeda; --line:#dcd2b6;
+  --text:#251e0d; --text-2:#4a4331; --muted:#6b6149;
+  --gold:#7f5e05; --gold-2:#7c5c07;
+  --v-storm:#2f5faf; --v-hot:#a3441c; --v-rain:#33648f; --v-nice:#1a6e34; --v-warm:#8f6a06;
+}
+
+/* ---- current conditions ---- */
+.weather-now { display:flex; align-items:center; gap:12px; }
+.wn-emoji { font-size:40px; line-height:1; }
+.wn-temp { font-size:40px; font-weight:900; color:var(--gold-2); font-variant-numeric:tabular-nums; }
+.wn-meta { display:flex; flex-direction:column; min-width:0; }
+.wn-verdict { font-weight:900; font-size:17px; }
+.wn-sub { color:var(--muted); font-size:12px; margin-top:2px; }
+
+/* ---- section labels ---- */
+.weather-strip-label {
+  margin:14px 0 8px; font-size:11px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--gold);
+}
+.weather-strip-hint {
+  color:var(--muted); font-weight:700; letter-spacing:0.5px; text-transform:none;
+}
+.weather-mini-note { margin:10px 0 0; color:var(--muted); font-size:11px; }
+.weather-note { margin:4px 0 0; color:var(--text-2); font-size:13px; line-height:1.5; }
+.weather-loading { color:var(--muted); }
+
+/* ---- day carousel ---- */
+.weather-carousel {
+  display:grid; grid-auto-flow:column;
+  grid-auto-columns:calc((100% - 16px) / 3);   /* 3 visible, 4th peeks */
+  gap:8px; overflow-x:auto; scroll-snap-type:x mandatory;
+  margin:0 -16px; padding:2px 16px 4px;
+  scroll-padding:0 16px;                        /* required — see §2 */
+  -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+.weather-carousel::-webkit-scrollbar { display:none; }
+
+.wcard {
+  scroll-snap-align:start;
+  background:var(--bg-2); border:1px solid var(--line); border-radius:14px;
+  padding:10px 6px; text-align:center;
+}
+.wcard-dow { font-size:12px; font-weight:900; color:var(--text);
+             text-transform:uppercase; letter-spacing:1px; }
+.wcard-date { font-size:10px; color:var(--muted); }
+.wcard-emoji { font-size:28px; margin:5px 0 2px; }
+.wcard-verdict { font-size:11px; font-weight:800; min-height:28px;
+                 display:flex; align-items:center; justify-content:center; }
+.wcard-temps { margin-top:2px; }
+.wcard-hi { font-weight:900; color:var(--gold-2); font-size:17px; }
+.wcard-lo { color:var(--muted); font-size:14px; margin-left:6px; }
+.wcard-pop { color:var(--v-rain); font-size:11px; margin-top:3px; }
+
+/* selection beats classification — hence !important */
+.wcard-sel { border-color:var(--gold) !important; background:rgba(245,197,24,0.08); }
+
+/* ---- hourly drawer ---- */
+.hourly {
+  display:grid; grid-auto-flow:column; grid-auto-columns:1fr;
+  gap:2px; margin-top:10px; padding:10px 4px;
+  background:var(--bg-2); border:1px solid var(--line); border-radius:12px;
+}
+.hourly-slot { text-align:center; }
+.hourly-hr { font-size:10px; font-weight:800; color:var(--muted); }
+.hourly-emoji { font-size:17px; margin:3px 0 1px; line-height:1; }
+.hourly-temp { font-size:12px; font-weight:800; }
+.hourly-pop { font-size:10px; color:var(--muted); min-height:13px; }
+.hourly-pop.wet { color:var(--v-rain); font-weight:800; }
+
+/* light mode: re-ink emoji edges so they survive on cream */
+html[data-theme='light'] .hourly-emoji,
+html[data-theme='light'] .wcard-emoji {
+  filter:drop-shadow(0 1px 1.5px rgba(37,30,13,0.5));
+}
+
+/* ---- verdict colours: text ---- */
+.verdict-storm { color:var(--v-storm); }
+.verdict-hot   { color:var(--v-hot); }
+.verdict-warm  { color:var(--v-warm); }
+.verdict-rain  { color:var(--v-rain); }
+.verdict-nice  { color:var(--v-nice); }
+.verdict-meh   { color:var(--muted); }
+
+/* ---- verdict colours: card trim (meh omitted on purpose) ---- */
+.verdict-border-storm { border-color:rgba(143,184,255,0.50); }
+.verdict-border-hot   { border-color:rgba(255,122,77,0.55); }
+.verdict-border-warm  { border-color:rgba(255,216,74,0.40); }
+.verdict-border-rain  { border-color:rgba(159,208,255,0.45); }
+.verdict-border-nice  { border-color:rgba(109,213,122,0.45); }</code></pre>
+
+<h2>10 · Complete component</h2>
+
+<pre><code>import { useEffect, useState } from 'react'
+import { getWeather } from '../api.js'
+import { TRIP_DATES, describeWeather } from '../constants.js'
+
+const VERDICTS = {
+  storm: ['Bring the jacket', 'Ark weather', 'Biblical', 'Poncho o’clock', 'Gonna get wet'],
+  hot:   ['Properly hot', 'Scorcher', 'Shade weather', 'Surface of the sun'],
+  warm:  ['Toasty', 'A warm one', 'Shirt-sticking weather'],
+  rain:  ['Soggy', 'Damp and grumpy', 'Umbrella day'],
+  nice:  ['Chef’s kiss', 'Actually perfect', 'Golf weather', 'Patio weather'],
+  meh:   ['Grey but fine', 'Meh skies', 'Nothing to report']
+}
+
+function hash(str) {
+  let h = 0
+  for (let i = 0; i &lt; str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0
+  return Math.abs(h)
+}
+
+// heat = the temperature that matters for "is it nasty" (feels-like now, or the daily high).
+function verdictFor(key, code, heat, pop) {
+  let cat
+  if (code &gt;= 95 || (pop != null &amp;&amp; pop &gt;= 70)) cat = 'storm'
+  else if (heat &gt;= 93) cat = 'hot'
+  else if ((code &gt;= 51 &amp;&amp; code &lt;= 67) || (code &gt;= 80 &amp;&amp; code &lt;= 82) || (pop != null &amp;&amp; pop &gt;= 40)) cat = 'rain'
+  else if (heat &gt;= 85) cat = 'warm'
+  else if (code &lt;= 1) cat = 'nice'
+  else cat = 'meh'
+  const list = VERDICTS[cat]
+  return { cat, text: list[hash(key) % list.length] }
+}
+
+// The expanded day: 8 AM to 10 PM in 2-hour steps — one glance,
+// "is the rain at tee time or after dark." A 24-row hour table would be
+// overcomplicating it; this answers the actual question.
+function Hourly({ data, date }) {
+  const h = data?.hourly
+  if (!date || !h?.time) return null
+  const slots = []
+  for (let i = 0; i &lt; h.time.length; i++) {
+    if (!h.time[i].startsWith(date)) continue
+    const hr = Number(h.time[i].slice(11, 13))
+    if (hr &lt; 8 || hr % 2 !== 0) continue
+    slots.push({
+      hr,
+      temp: Math.round(h.temperature_2m[i]),
+      pop: h.precipitation_probability?.[i],
+      emoji: describeWeather(h.weather_code[i])[1]
+    })
+  }
+  if (!slots.length) return null
+  const fmtHr = hr =&gt; (hr === 12 ? '12P' : hr &lt; 12 ? hr + 'A' : (hr - 12) + 'P')
+  return (
+    &lt;div className="hourly"&gt;
+      {slots.map(s =&gt; (
+        &lt;div className="hourly-slot" key={s.hr}&gt;
+          &lt;div className="hourly-hr"&gt;{fmtHr(s.hr)}&lt;/div&gt;
+          &lt;div className="hourly-emoji"&gt;{s.emoji}&lt;/div&gt;
+          &lt;div className="hourly-temp"&gt;{s.temp}°&lt;/div&gt;
+          &lt;div className={'hourly-pop' + (s.pop &gt;= 40 ? ' wet' : '')}&gt;
+            {s.pop != null ? s.pop + '%' : ''}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+export default function Weather() {
+  const [data, setData] = useState(null)
+  const [failed, setFailed] = useState(false)
+  // Which day card is expanded (its date string), or null. Tap to open,
+  // tap again to close, tap another to switch — accordion rules.
+  const [selDay, setSelDay] = useState(null)
+
+  useEffect(() =&gt; {
+    let alive = true
+    async function load() {
+      try {
+        const w = await getWeather()
+        if (alive) { setData(w); setFailed(false) }
+      } catch {
+        if (alive) setFailed(true)
+      }
+    }
+    load()
+    const iv = setInterval(load, 30 * 60 * 1000)
+    return () =&gt; { alive = false; clearInterval(iv) }
+  }, [])
+
+  if (failed &amp;&amp; !data) { /* hardcoded seasonal prose card — always true, never wrong */ }
+  if (!data) { /* "Checking the skies…" */ }
+
+  const cur = data.current || {}
+  const [curLabel, curEmoji] = describeWeather(cur.weather_code)
+  const nowVerdict = verdictFor('now', cur.weather_code, cur.apparent_temperature, null)
+
+  const daily = data.daily || {}
+  const allDays = (daily.time || []).map((date, i) =&gt; ({
+    date, code: daily.weather_code?.[i],
+    hi: daily.temperature_2m_max?.[i], lo: daily.temperature_2m_min?.[i],
+    pop: daily.precipitation_probability_max?.[i]
+  }))
+  // Show the trip days once they're in range; until then, a rolling next week.
+  const tripDays = allDays.filter(d =&gt; TRIP_DATES.includes(d.date))
+  const showingTrip = tripDays.length &gt; 0
+  const days = showingTrip ? tripDays : allDays.slice(0, 7)
+
+  return (
+    &lt;div className="card weather"&gt;
+      &lt;div className="card-title"&gt;🌡️ the city weather&lt;/div&gt;
+
+      &lt;div className="weather-strip-label"&gt;Right now&lt;/div&gt;
+      &lt;div className="weather-now"&gt;
+        &lt;div className="wn-emoji"&gt;{curEmoji}&lt;/div&gt;
+        &lt;div className="wn-temp"&gt;{Math.round(cur.temperature_2m)}°&lt;/div&gt;
+        &lt;div className="wn-meta"&gt;
+          &lt;div className={'wn-verdict verdict-' + nowVerdict.cat}&gt;{nowVerdict.text}&lt;/div&gt;
+          &lt;div className="wn-sub"&gt;
+            {curLabel} · feels {Math.round(cur.apparent_temperature)}° ·{' '}
+            {Math.round(cur.relative_humidity_2m)}% humidity
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div className="weather-strip-label"&gt;
+        {showingTrip ? 'The trip, day by day' : 'The next week'}
+        &lt;span className="weather-strip-hint"&gt; · tap a day for hourly&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div className="weather-carousel"&gt;
+        {days.map(d =&gt; {
+          const [label, emoji] = describeWeather(d.code)
+          const v = verdictFor(d.date, d.code, d.hi, d.pop)
+          const day = new Date(d.date + 'T12:00:00')
+          const dow = day.toLocaleDateString('en-US', { weekday: 'short' })
+          const md = day.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+          const sel = selDay === d.date
+          return (
+            &lt;button
+              className={'wcard verdict-border-' + v.cat + (sel ? ' wcard-sel' : '')}
+              key={d.date}
+              onClick={() =&gt; setSelDay(sel ? null : d.date)}
+            &gt;
+              &lt;div className="wcard-dow"&gt;{dow}&lt;/div&gt;
+              &lt;div className="wcard-date"&gt;{md}&lt;/div&gt;
+              &lt;div className="wcard-emoji" title={label}&gt;{emoji}&lt;/div&gt;
+              &lt;div className="wcard-verdict" title={label}&gt;{v.text}&lt;/div&gt;
+              &lt;div className="wcard-temps"&gt;
+                &lt;span className="wcard-hi"&gt;{Math.round(d.hi)}°&lt;/span&gt;
+                &lt;span className="wcard-lo"&gt;{Math.round(d.lo)}°&lt;/span&gt;
+              &lt;/div&gt;
+              {d.pop != null &amp;&amp; &lt;div className="wcard-pop"&gt;💧 {d.pop}%&lt;/div&gt;}
+            &lt;/button&gt;
+          )
+        })}
+      &lt;/div&gt;
+
+      {/* Sibling of the carousel, NOT a child of a card. This is load-bearing. */}
+      &lt;Hourly data={data} date={selDay} /&gt;
+
+      {!showingTrip &amp;&amp; (
+        &lt;p className="weather-mini-note"&gt;Jun 10–13 forecast drops in about two weeks out.&lt;/p&gt;
+      )}
+    &lt;/div&gt;
+  )
+}</code></pre>
+
+</div>
+
+<script>
+const VERDICTS = {
+  storm: ['Bring the jacket','Ark weather','Biblical','Poncho o’clock','Gonna get wet'],
+  hot:   ['Properly hot','Scorcher','Shade weather','Surface of the sun'],
+  warm:  ['Toasty','A warm one','Shirt-sticking weather'],
+  rain:  ['Soggy','Damp and grumpy','Umbrella day'],
+  nice:  ['Chef’s kiss','Actually perfect','Golf weather','Patio weather'],
+  meh:   ['Grey but fine','Meh skies','Nothing to report']
+};
+const CODES = {0:['Clear','☀️'],1:['Mostly clear','🌤️'],2:['Partly cloudy','⛅'],3:['Overcast','☁️'],
+  61:['Light rain','🌧️'],63:['Rain','🌧️'],80:['Showers','🌦️'],81:['Showers','🌦️'],
+  82:['Heavy showers','⛈️'],95:['Thunderstorm','⛈️']};
+const describeWeather = c => CODES[c] || ['—','🌡️'];
+function hash(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h)}
+function verdictFor(key,code,heat,pop){
+  let cat;
+  if (code>=95||(pop!=null&&pop>=70)) cat='storm';
+  else if (heat>=93) cat='hot';
+  else if ((code>=51&&code<=67)||(code>=80&&code<=82)||(pop!=null&&pop>=40)) cat='rain';
+  else if (heat>=85) cat='warm';
+  else if (code<=1) cat='nice';
+  else cat='meh';
+  const l=VERDICTS[cat];
+  return {cat,text:l[hash(key)%l.length]};
+}
+const NEXT_WEEK = [
+  {date:'2026-08-06',code:2,hi:91,lo:72,pop:10},
+  {date:'2026-08-07',code:95,hi:89,lo:73,pop:75},
+  {date:'2026-08-08',code:63,hi:84,lo:70,pop:55},
+  {date:'2026-08-09',code:0,hi:82,lo:66,pop:5},
+  {date:'2026-08-10',code:3,hi:83,lo:68,pop:20},
+  {date:'2026-08-11',code:1,hi:94,lo:74,pop:0},
+  {date:'2026-08-12',code:2,hi:88,lo:71,pop:15}
+];
+const TRIP = [
+  {date:'2027-06-10',code:2,hi:92,lo:74,pop:20},
+  {date:'2027-06-11',code:95,hi:90,lo:73,pop:70},
+  {date:'2027-06-12',code:1,hi:95,lo:75,pop:10},
+  {date:'2027-06-13',code:80,hi:86,lo:72,pop:45}
+];
+// hourly specimen rows, keyed by date: [hour, code, temp, pop]
+const HOURLY = {};
+const SHAPES = {
+  storm:[[8,2,76,10],[10,2,82,15],[12,3,86,25],[14,95,88,65],[16,95,84,85],[18,80,80,60],[20,3,76,35],[22,2,74,20]],
+  hot:  [[8,0,78,0],[10,0,85,0],[12,1,90,0],[14,0,94,5],[16,0,95,5],[18,0,92,10],[20,1,86,5],[22,2,80,0]],
+  rain: [[8,3,74,30],[10,80,76,45],[12,61,78,55],[14,63,80,60],[16,80,82,50],[18,3,79,35],[20,2,76,20],[22,2,73,15]],
+  nice: [[8,0,68,0],[10,0,73,0],[12,0,78,0],[14,1,81,5],[16,0,82,5],[18,0,79,0],[20,0,74,0],[22,0,70,0]],
+  warm: [[8,2,75,5],[10,2,81,10],[12,2,86,15],[14,3,90,20],[16,2,91,20],[18,2,88,15],[20,2,82,10],[22,2,78,5]],
+  meh:  [[8,3,70,10],[10,3,75,15],[12,3,79,20],[14,3,82,20],[16,3,83,20],[18,3,80,15],[20,3,75,10],[22,3,72,10]]
+};
+[...NEXT_WEEK, ...TRIP].forEach(d => {
+  const v = verdictFor(d.date, d.code, d.hi, d.pop);
+  HOURLY[d.date] = SHAPES[v.cat];
+});
+const fmtHr = hr => (hr===12?'12P':hr<12?hr+'A':(hr-12)+'P');
+
+function hourlyHTML(date){
+  const rows = HOURLY[date]; if(!rows) return '';
+  return '<div class="hourly">' + rows.map(([hr,code,temp,pop]) =>
+    '<div class="hourly-slot">'
+    + '<div class="hourly-hr">'+fmtHr(hr)+'</div>'
+    + '<div class="hourly-emoji">'+describeWeather(code)[1]+'</div>'
+    + '<div class="hourly-temp">'+temp+'°</div>'
+    + '<div class="hourly-pop'+(pop>=40?' wet':'')+'">'+pop+'%</div>'
+    + '</div>').join('') + '</div>';
+}
+
+function render(el, days, showingTrip, selDay, interactive){
+  const nowV = verdictFor('now', 2, 96, null);
+  let h = '<div class="card-title">🌡️ the city weather</div>'
+    + '<div class="weather-strip-label">Right now</div>'
+    + '<div class="weather-now">'
+    +   '<div class="wn-emoji">⛅</div><div class="wn-temp">93°</div>'
+    +   '<div class="wn-meta">'
+    +     '<div class="wn-verdict verdict-'+nowV.cat+'">'+nowV.text+'</div>'
+    +     '<div class="wn-sub">Partly cloudy · feels 96° · 71% humidity</div>'
+    +   '</div></div>'
+    + '<div class="weather-strip-label">'
+    +   (showingTrip ? 'The trip, day by day' : 'The next week')
+    +   '<span class="weather-strip-hint"> · tap a day for hourly</span></div>'
+    + '<div class="weather-carousel">';
+  days.forEach(d => {
+    const v = verdictFor(d.date, d.code, d.hi, d.pop);
+    const dt = new Date(d.date+'T12:00:00');
+    const dow = dt.toLocaleDateString('en-US',{weekday:'short'});
+    const md  = dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const sel = selDay === d.date;
+    h += '<button class="wcard verdict-border-'+v.cat+(sel?' wcard-sel':'')+'" data-date="'+d.date+'">'
+      + '<div class="wcard-dow">'+dow+'</div>'
+      + '<div class="wcard-date">'+md+'</div>'
+      + '<div class="wcard-emoji">'+describeWeather(d.code)[1]+'</div>'
+      + '<div class="wcard-verdict">'+v.text+'</div>'
+      + '<div class="wcard-temps"><span class="wcard-hi">'+d.hi+'°</span>'
+      + '<span class="wcard-lo">'+d.lo+'°</span></div>'
+      + '<div class="wcard-pop">💧 '+d.pop+'%</div></button>';
+  });
+  h += '</div>';
+  h += selDay ? hourlyHTML(selDay) : '';
+  if (!showingTrip) h += '<p class="weather-mini-note">Jun 10–13 forecast drops in about two weeks out.</p>';
+  el.innerHTML = h;
+  if (interactive) {
+    el.querySelectorAll('.wcard').forEach(b => {
+      b.addEventListener('click', () => {
+        const d = b.dataset.date;
+        const next = (el.__sel === d) ? null : d;
+        el.__sel = next;
+        render(el, days, showingTrip, next, true);
+      });
+    });
+  }
+}
+
+render(document.getElementById('specA-dark'),  NEXT_WEEK, false, null, true);
+render(document.getElementById('specA-light'), NEXT_WEEK, false, null, true);
+render(document.getElementById('specB-dark'),  TRIP, true, null, true);
+render(document.getElementById('specB-light'), TRIP, true, null, true);
+const cd = document.getElementById('specC-dark');  cd.__sel = '2027-06-11'; render(cd, TRIP, true, '2027-06-11', true);
+const cl = document.getElementById('specC-light'); cl.__sel = '2027-06-11'; render(cl, TRIP, true, '2027-06-11', true);
+</script>
+</body>
+</html>

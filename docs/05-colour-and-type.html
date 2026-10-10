@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cream &amp; Gold — Colour and Type</title>
+<style>
+:root{
+  /* ---------- the palette ---------- */
+  --bg:#f6f1e2;      /* page */
+  --bg-2:#ede5cf;    /* tiles, wells, recessed areas */
+  --card:#fffdf4;    /* card top */
+  --card-2:#f5eeda;  /* card bottom (cards are a soft vertical gradient) */
+  --line:#dcd2b6;    /* every border */
+
+  --text:#251e0d;    /* headlines, primary copy */
+  --text-2:#4a4331;  /* body copy */
+  --muted:#6b6149;   /* captions, labels, secondary numbers */
+
+  --gold:#7f5e05;    /* section labels, accents */
+  --gold-2:#7c5c07;  /* big numbers, emphasis */
+  --gold-3:#5f4605;  /* deepest gold, rare */
+
+  --red:#c22f22;
+  --green:#1a6e34;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text-2);font-family:var(--font);
+     font-size:15px;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:36px 20px 90px}
+h1{font-size:30px;line-height:1.15;margin:0 0 6px;color:var(--text);letter-spacing:-0.4px;font-weight:900}
+.sub{color:var(--muted);margin:0 0 36px;font-size:14px}
+h2{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold);
+   margin:48px 0 4px;border-top:1px solid var(--line);padding-top:24px;font-weight:800}
+h2 .n{color:var(--muted);margin-right:8px}
+p{margin:10px 0}
+b{color:var(--text)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.88em;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--gold-3)}
+pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+  overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12.5px;line-height:1.75;color:var(--text-2)}
+pre code{background:none;border:none;padding:0;color:inherit}
+
+/* swatch rows */
+.sw{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;
+    padding:11px 0;border-bottom:1px solid var(--line)}
+.sw:last-child{border-bottom:none}
+.chip{height:46px;border-radius:10px;border:1px solid var(--line)}
+.sw-name{font-weight:800;color:var(--text);font-size:14px}
+.sw-hex{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);margin-left:8px;font-weight:600}
+.sw-use{font-size:13px;color:var(--muted);margin-top:1px;line-height:1.45}
+.group{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 16px;margin:16px 0}
+
+/* type scale */
+.ts{border-bottom:1px solid var(--line);padding:13px 0;display:flex;
+    align-items:baseline;gap:16px;flex-wrap:wrap}
+.ts:last-child{border-bottom:none}
+.ts-spec{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted);
+         min-width:150px;font-weight:600}
+
+/* demo card */
+.demo{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);
+  border-radius:16px;padding:16px;margin:18px 0;box-shadow:0 6px 24px rgba(90,74,30,0.10)}
+.demo-title{font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold);
+  font-size:12px;margin-bottom:12px}
+.demo-hero{display:flex;align-items:center;gap:12px}
+.demo-num{font-size:40px;font-weight:900;color:var(--gold-2);font-variant-numeric:tabular-nums;line-height:1}
+.demo-lead{font-weight:900;font-size:17px;color:var(--text)}
+.demo-sub{color:var(--muted);font-size:12px;margin-top:2px}
+.demo-label{margin:16px 0 8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:800}
+.demo-row{display:flex;justify-content:space-between;align-items:center;
+  padding:11px 0;border-bottom:1px solid var(--line)}
+.demo-row:last-child{border-bottom:none}
+.demo-row-main{font-weight:700;color:var(--text);font-size:14px}
+.demo-row-sub{color:var(--muted);font-size:12px}
+.pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.4px;
+  padding:3px 9px;border-radius:999px;border:1px solid var(--line);background:var(--bg-2);color:var(--muted)}
+.pill-go{color:var(--green);border-color:rgba(26,110,52,.45)}
+.pill-no{color:var(--red);border-color:rgba(194,47,34,.45)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.tile{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:11px 8px;text-align:center}
+.tile-n{font-size:20px;font-weight:900;color:var(--gold-2);line-height:1.1}
+.tile-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;font-weight:700}
+.btn{display:inline-block;margin-top:14px;padding:12px 18px;border-radius:12px;border:none;
+  background:linear-gradient(180deg,#ffd84a,#b8860b);color:#251e0d;font-weight:900;
+  font-size:14px;font-family:var(--font);background-origin:border-box}
+
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;font-weight:800}
+td b{font-weight:800}
+.ok{color:var(--green);font-weight:800}
+.warn{color:var(--red);font-weight:800}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:0 12px 12px 0;padding:13px 17px;margin:18px 0;font-size:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Cream &amp; Gold</h1>
+<p class="sub">Colour and type, lifted from the the city draft app's light theme. This page is itself built with the palette — what you're looking at <i>is</i> the scheme. Six steps, then a copy-paste block at the end.</p>
+
+<div class="note">
+The whole idea in one sentence: <b>a warm cream page, off-white cards floating on it, near-black-brown text, and one accent colour — a deep antique gold — used sparingly for labels and numbers.</b> No pure white, no pure black, no grey. Everything is warm-tinted.
+</div>
+
+<h2><span class="n">01</span> The font</h2>
+
+<p>Whatever the device already has. No web font, no download, no loading flash.</p>
+
+<pre><code>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             Helvetica, Arial, sans-serif;</code></pre>
+
+<p>On an iPhone that renders as San Francisco, on Android as Roboto, on Windows as Segoe. It looks native everywhere because it <i>is</i> native. The personality comes from the weights, not the typeface — this scheme leans hard on very heavy weights next to light grey captions, and that contrast is most of the look.</p>
+
+<div class="group">
+  <div class="ts"><span class="ts-spec">30px / 900 / -0.4px</span><span style="font-size:30px;font-weight:900;color:var(--text);letter-spacing:-0.4px">Page heading</span></div>
+  <div class="ts"><span class="ts-spec">40px / 900 / tabular</span><span style="font-size:40px;font-weight:900;color:var(--gold-2);font-variant-numeric:tabular-nums">93°</span></div>
+  <div class="ts"><span class="ts-spec">17px / 900</span><span style="font-size:17px;font-weight:900;color:var(--text)">The lead line</span></div>
+  <div class="ts"><span class="ts-spec">14px / 700</span><span style="font-size:14px;font-weight:700;color:var(--text)">A list row</span></div>
+  <div class="ts"><span class="ts-spec">15px / 400 / 1.6</span><span style="font-size:15px;color:var(--text-2)">Body copy sits at normal weight</span></div>
+  <div class="ts"><span class="ts-spec">12px / 800 / +1.2px / UPPER</span><span style="font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold)">Card header</span></div>
+  <div class="ts"><span class="ts-spec">11px / 800 / +2px / UPPER</span><span style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold)">Section label</span></div>
+  <div class="ts"><span class="ts-spec">12px / 400</span><span style="font-size:12px;color:var(--muted)">Caption or secondary detail</span></div>
+</div>
+
+<p>Three rules that matter more than the sizes:</p>
+
+<p><b>Headings are 800–900, never 600 or 700.</b> Semibold reads as timid in this scheme. Go heavy or go normal.</p>
+
+<p><b>Small uppercase labels always get letter-spacing</b> — 1.2px at 12px, 2px at 11px. Uppercase without tracking looks cramped and cheap; with it, it reads as deliberate.</p>
+
+<p><b>Any number that updates gets <code>font-variant-numeric: tabular-nums</code></b> so digits keep the same width and nothing jitters when the value changes.</p>
+
+<h2><span class="n">02</span> The surfaces</h2>
+
+<p>Four warm creams, light to dark. The whole layout is built by stacking these — no shadows needed to create hierarchy, just the steps between them.</p>
+
+<div class="group">
+  <div class="sw"><div class="chip" style="background:#f6f1e2"></div>
+    <div><div class="sw-name">--bg<span class="sw-hex">#f6f1e2</span></div>
+    <div class="sw-use">The page. Warm cream, never white.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#fffdf4"></div>
+    <div><div class="sw-name">--card<span class="sw-hex">#fffdf4</span></div>
+    <div class="sw-use">Card top. Lighter than the page, so cards float forward.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#f5eeda"></div>
+    <div><div class="sw-name">--card-2<span class="sw-hex">#f5eeda</span></div>
+    <div class="sw-use">Card bottom. Cards are a gradient from --card to this — a very subtle top-lit effect.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#ede5cf"></div>
+    <div><div class="sw-name">--bg-2<span class="sw-hex">#ede5cf</span></div>
+    <div class="sw-use">Tiles, wells, stat boxes, anything recessed <i>inside</i> a card.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#dcd2b6"></div>
+    <div><div class="sw-name">--line<span class="sw-hex">#dcd2b6</span></div>
+    <div class="sw-use">Every border and divider in the app. One line colour, no exceptions.</div></div></div>
+</div>
+
+<p>The card is the workhorse — copy this exactly:</p>
+
+<pre><code>.card {
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 24px rgba(90, 74, 30, 0.10);
+}</code></pre>
+
+<p>Note the shadow is <b>warm brown at 10%</b>, not black. A black shadow on cream turns grey and instantly looks like a different design. Radii step down as things nest: 16px cards, 12–14px tiles inside them, 999px pills.</p>
+
+<h2><span class="n">03</span> The text</h2>
+
+<div class="group">
+  <div class="sw"><div class="chip" style="background:#251e0d"></div>
+    <div><div class="sw-name">--text<span class="sw-hex">#251e0d</span></div>
+    <div class="sw-use">Headlines and anything that must be read first. Very dark warm brown — not black.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#4a4331"></div>
+    <div><div class="sw-name">--text-2<span class="sw-hex">#4a4331</span></div>
+    <div class="sw-use">Body copy and paragraphs.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#6b6149"></div>
+    <div><div class="sw-name">--muted<span class="sw-hex">#6b6149</span></div>
+    <div class="sw-use">Captions, timestamps, secondary numbers, anything deliberately quiet.</div></div></div>
+</div>
+
+<p>Three levels is the whole system. If something needs to be quieter than <code>--muted</code>, it should probably be smaller or deleted, not greyer.</p>
+
+<h2><span class="n">04</span> The accent</h2>
+
+<p>One accent colour, in three depths. This is the signature of the scheme, and it's the thing most likely to go wrong: <b>the gold is dark.</b> In the dark theme this app's gold is a bright <code>#f5c518</code>; on cream that same yellow is nearly invisible, so the light theme swaps in a deep antique gold that happens to read as brown-gold. Same role, different value.</p>
+
+<div class="group">
+  <div class="sw"><div class="chip" style="background:#7f5e05"></div>
+    <div><div class="sw-name">--gold<span class="sw-hex">#7f5e05</span></div>
+    <div class="sw-use">Section labels, card headers, small accents. The default.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#7c5c07"></div>
+    <div><div class="sw-name">--gold-2<span class="sw-hex">#7c5c07</span></div>
+    <div class="sw-use">Big numbers and hero values. Practically identical to --gold on purpose — it's the dark-theme counterpart that differs.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#5f4605"></div>
+    <div><div class="sw-name">--gold-3<span class="sw-hex">#5f4605</span></div>
+    <div class="sw-use">Deepest gold. Inline code, rare emphasis.</div></div></div>
+</div>
+
+<p><b>Use it sparingly.</b> Gold appears on uppercase section labels, on hero numbers, and on primary buttons. That's it. It is not a body-text colour and it is not a link colour. The restraint is what makes it read as expensive rather than as a highlighter.</p>
+
+<p>The one place the <i>bright</i> gold survives in light mode is a filled button, where it's a background rather than text:</p>
+
+<pre><code>.btn-primary {
+  background: linear-gradient(180deg, #ffd84a, #b8860b);
+  color: #251e0d;
+  border: none; border-radius: 12px;
+  padding: 12px 18px; font-weight: 900;
+  background-origin: border-box;  /* see the gotcha in §6 */
+}</code></pre>
+
+<button class="btn">Get directions</button>
+
+<h2><span class="n">05</span> Status colours</h2>
+
+<p>Two, plus a small set of optional extras. Both are darkened for cream — the dark theme's <code>#ff4d4d</code> and <code>#6dd57a</code> are far too light here.</p>
+
+<div class="two">
+<div class="group">
+  <div class="sw"><div class="chip" style="background:#1a6e34"></div>
+    <div><div class="sw-name">--green<span class="sw-hex">#1a6e34</span></div>
+    <div class="sw-use">Good, done, confirmed, available.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#c22f22"></div>
+    <div><div class="sw-name">--red<span class="sw-hex">#c22f22</span></div>
+    <div class="sw-use">Bad, errors, cancelled, unavailable.</div></div></div>
+</div>
+<div class="group">
+  <div class="sw"><div class="chip" style="background:#2f5faf"></div>
+    <div><div class="sw-name">blue<span class="sw-hex">#2f5faf</span></div>
+    <div class="sw-use">Optional. Info, cool, water.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#a3441c"></div>
+    <div><div class="sw-name">rust<span class="sw-hex">#a3441c</span></div>
+    <div class="sw-use">Optional. Warning, heat, attention.</div></div></div>
+</div>
+</div>
+
+<p>Status colours go on <b>text and borders, not fills</b>. A pill gets the coloured text on a <code>--bg-2</code> background with a border of the same hue at ~45% alpha. Solid colour-filled badges break the calm of the scheme immediately.</p>
+
+<p style="margin-top:14px">
+  <span class="pill">neutral</span>&nbsp;
+  <span class="pill pill-go">✓ confirmed</span>&nbsp;
+  <span class="pill pill-no">cancelled</span>
+</p>
+
+<pre><code>.pill {
+  font-size: 11px; font-weight: 800; letter-spacing: .4px;
+  padding: 3px 9px; border-radius: 999px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.pill-go { color: #1a6e34; border-color: rgba(26,110,52,0.45); }
+.pill-no { color: #c22f22; border-color: rgba(194,47,34,0.45); }</code></pre>
+
+<h2><span class="n">06</span> Putting it together</h2>
+
+<p>A card using nothing but the tokens above — this is the pattern the whole app repeats:</p>
+
+<div class="demo">
+  <div class="demo-title">🏈 Draft day</div>
+  <div class="demo-hero">
+    <div class="demo-num">4</div>
+    <div>
+      <div class="demo-lead">Days to go</div>
+      <div class="demo-sub">Saturday · 10:00 AM · the basement</div>
+    </div>
+  </div>
+
+  <div class="demo-label">Who's in</div>
+  <div class="demo-row">
+    <div><div class="demo-row-main">Muz</div><div class="demo-row-sub">Flying in Thursday</div></div>
+    <span class="pill pill-go">✓ paid</span>
+  </div>
+  <div class="demo-row">
+    <div><div class="demo-row-main">Alex</div><div class="demo-row-sub">Driving</div></div>
+    <span class="pill pill-go">✓ paid</span>
+  </div>
+  <div class="demo-row">
+    <div><div class="demo-row-main">Kevin</div><div class="demo-row-sub">Still deciding</div></div>
+    <span class="pill">pending</span>
+  </div>
+
+  <div class="demo-label">The numbers</div>
+  <div class="tiles">
+    <div class="tile"><div class="tile-n">10</div><div class="tile-l">teams</div></div>
+    <div class="tile"><div class="tile-n">$250</div><div class="tile-l">buy-in</div></div>
+    <div class="tile"><div class="tile-n">16</div><div class="tile-l">rounds</div></div>
+  </div>
+
+  <button class="btn">Set my keeper</button>
+</div>
+
+<p>Read the hierarchy: gold uppercase header, one big gold number with a heavy black lead beside it, quiet grey detail underneath, hairline-divided rows, recessed tiles a shade darker than the card, one filled gold button. Nothing is bold-and-coloured at the same time except the things that matter most.</p>
+
+<h2><span class="n">07</span> Gotchas</h2>
+
+<p><b>This is not the dark theme inverted.</b> Every colour was re-picked for cream. If you take the dark values and flip the lightness you get muddy olive text and an invisible gold. Treat them as two hand-made palettes that share names.</p>
+
+<p><b>Shadows are brown, never black.</b> <code>rgba(90,74,30,0.10)</code>. A black shadow greys out the warmth.</p>
+
+<p><b>Emoji need help on cream.</b> Yellow and white glyphs — suns, clouds — nearly disappear. Re-ink their edges:</p>
+<pre><code>filter: drop-shadow(0 1px 1.5px rgba(37, 30, 13, 0.5));</code></pre>
+
+<p><b>Gradient buttons need <code>background-origin: border-box</code>.</b> Without it a gradient sized to the padding box gets painted across the border box and repeats a sliver at the top edge — it looks like a faint darker stripe and it's maddening to diagnose.</p>
+
+<h2><span class="n">08</span> Contrast check</h2>
+
+<p>Every foreground below clears WCAG AA (4.5:1) on all three surfaces, with one exception noted.</p>
+
+<table>
+<tr><th>Colour</th><th>on card #fffdf4</th><th>on page #f6f1e2</th><th>on tile #ede5cf</th></tr>
+<tr><td><b>--text</b> #251e0d</td><td class="ok">16.2</td><td class="ok">14.6</td><td class="ok">13.2</td></tr>
+<tr><td><b>--text-2</b> #4a4331</td><td class="ok">9.6</td><td class="ok">8.7</td><td class="ok">7.8</td></tr>
+<tr><td><b>--muted</b> #6b6149</td><td class="ok">6.0</td><td class="ok">5.4</td><td class="ok">4.9</td></tr>
+<tr><td><b>--gold</b> #7f5e05</td><td class="ok">5.9</td><td class="ok">5.3</td><td class="ok">4.8</td></tr>
+<tr><td><b>--gold-2</b> #7c5c07</td><td class="ok">6.1</td><td class="ok">5.5</td><td class="ok">4.9</td></tr>
+<tr><td><b>--green</b> #1a6e34</td><td class="ok">6.2</td><td class="ok">5.6</td><td class="ok">5.0</td></tr>
+<tr><td><b>--red</b> #c22f22</td><td class="ok">5.5</td><td class="ok">5.0</td><td class="ok">4.5</td></tr>
+<tr><td>blue #2f5faf</td><td class="ok">6.1</td><td class="ok">5.5</td><td class="ok">5.0</td></tr>
+<tr><td>rust #a3441c</td><td class="ok">6.1</td><td class="ok">5.5</td><td class="ok">4.9</td></tr>
+<tr><td>amber #8f6a06</td><td class="ok">4.9</td><td class="warn">4.4</td><td class="warn">4.0</td></tr>
+</table>
+
+<p>That last one — the mid amber — only passes on cards. Use it at 18px+ bold or keep it off the darker surfaces.</p>
+
+<h2><span class="n">09</span> Copy-paste</h2>
+
+<p>Everything above, as one block. Drop it at the top of the stylesheet and reference the variables from there on.</p>
+
+<pre><code>:root {
+  /* surfaces — warm cream, light to dark */
+  --bg:      #f6f1e2;   /* page */
+  --card:    #fffdf4;   /* card top */
+  --card-2:  #f5eeda;   /* card bottom (gradient) */
+  --bg-2:    #ede5cf;   /* tiles / wells inside cards */
+  --line:    #dcd2b6;   /* every border */
+
+  /* text — three levels, warm brown, never grey */
+  --text:    #251e0d;   /* headlines */
+  --text-2:  #4a4331;   /* body */
+  --muted:   #6b6149;   /* captions */
+
+  /* accent — deep antique gold, used sparingly */
+  --gold:    #7f5e05;   /* labels, headers */
+  --gold-2:  #7c5c07;   /* hero numbers */
+  --gold-3:  #5f4605;   /* deepest */
+
+  /* status */
+  --green:   #1a6e34;
+  --red:     #c22f22;
+  --blue:    #2f5faf;   /* optional */
+  --rust:    #a3441c;   /* optional */
+
+  /* button fill — the one place bright gold survives */
+  --btn-hi:  #ffd84a;
+  --btn-lo:  #b8860b;
+
+  /* type */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+
+  /* depth — warm shadow, never black */
+  --shadow: 0 6px 24px rgba(90, 74, 30, 0.10);
+}
+
+body { background: var(--bg); color: var(--text-2); font-family: var(--font);
+       font-size: 15px; line-height: 1.6; }
+
+.card { background: linear-gradient(180deg, var(--card), var(--card-2));
+        border: 1px solid var(--line); border-radius: 16px;
+        padding: 16px; box-shadow: var(--shadow); }
+
+.card-title { font-size: 12px; font-weight: 800; text-transform: uppercase;
+              letter-spacing: 1.2px; color: var(--gold); margin-bottom: 12px; }
+
+.section-label { font-size: 11px; font-weight: 800; text-transform: uppercase;
+                 letter-spacing: 2px; color: var(--gold); margin: 16px 0 8px; }
+
+.hero-number { font-size: 40px; font-weight: 900; color: var(--gold-2);
+               font-variant-numeric: tabular-nums; }
+
+.btn-primary { background: linear-gradient(180deg, var(--btn-hi), var(--btn-lo));
+               background-origin: border-box; color: var(--text);
+               border: none; border-radius: 12px; padding: 12px 18px;
+               font-weight: 900; font-size: 14px; font-family: var(--font); }</code></pre>
+
+</div>
+</body>
+</html>

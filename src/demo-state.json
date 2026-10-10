@@ -1,0 +1,333 @@
+{
+ "flights": {
+  "Alex": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Sam": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Jordan": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Riley": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Casey": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Morgan": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Taylor": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Jamie": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Drew": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  },
+  "Quinn": {
+   "arrivalDay": "",
+   "arrivalTime": "",
+   "arrivalAirline": "",
+   "arrivalFlight": "",
+   "departureDay": "",
+   "departureTime": "",
+   "departureAirline": "",
+   "departureFlight": ""
+  }
+ },
+ "draftOrder": null,
+ "draftRevealedAt": null,
+ "playlistUrl": "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M",
+ "predictions": [
+  {
+   "id": "seed-0000",
+   "question": "Total group spend on coffee, Thu\u2013Sun",
+   "type": "number",
+   "createdBy": "Alex",
+   "createdAt": 1800000000000,
+   "votes": {
+    "Drew": 63,
+    "Jamie": 83,
+    "Quinn": 81,
+    "Casey": 104,
+    "Taylor": 26,
+    "Sam": 15,
+    "Morgan": 60,
+    "Jordan": 41
+   }
+  },
+  {
+   "id": "seed-0001",
+   "question": "Does anyone miss a scheduled activity?",
+   "type": "yesno",
+   "createdBy": "Alex",
+   "createdAt": 1800000001000,
+   "votes": {
+    "Drew": "yes",
+    "Alex": "yes",
+    "Taylor": "yes",
+    "Riley": "yes",
+    "Morgan": "yes"
+   }
+  },
+  {
+   "id": "seed-0002",
+   "question": "Total photos taken by the group all weekend",
+   "type": "number",
+   "createdBy": "Jordan",
+   "createdAt": 1800000002000,
+   "votes": {
+    "Quinn": 110,
+    "Alex": 28,
+    "Jamie": 69,
+    "Jordan": 32,
+    "Riley": 84,
+    "Casey": 40
+   }
+  },
+  {
+   "id": "seed-0003",
+   "question": "Lowest score in the Saturday scramble",
+   "type": "number",
+   "createdBy": "Alex",
+   "createdAt": 1800000003000,
+   "votes": {
+    "Sam": 110,
+    "Jamie": 13,
+    "Casey": 93,
+    "Riley": 35,
+    "Drew": 43
+   }
+  },
+  {
+   "id": "seed-0004",
+   "question": "Unwashed mugs found Sunday morning",
+   "type": "number",
+   "createdBy": "Jordan",
+   "createdAt": 1800000004000,
+   "votes": {
+    "Casey": 11,
+    "Alex": 5,
+    "Sam": 111,
+    "Quinn": 90,
+    "Drew": 3,
+    "Riley": 30,
+    "Morgan": 29,
+    "Jamie": 119,
+    "Jordan": 9
+   }
+  },
+  {
+   "id": "seed-0005",
+   "question": "Do all ten make it past midnight on Saturday?",
+   "type": "yesno",
+   "createdBy": "Alex",
+   "createdAt": 1800000005000,
+   "votes": {
+    "Taylor": "yes",
+    "Quinn": "no",
+    "Sam": "no",
+    "Casey": "yes",
+    "Morgan": "no",
+    "Jamie": "yes",
+    "Jordan": "yes",
+    "Drew": "yes"
+   }
+  },
+  {
+   "id": "seed-0006",
+   "question": "Does the home team win?",
+   "type": "yesno",
+   "createdBy": "Jordan",
+   "createdAt": 1800000006000,
+   "votes": {
+    "Alex": "yes",
+    "Jamie": "no",
+    "Drew": "yes",
+    "Sam": "yes",
+    "Morgan": "no"
+   }
+  },
+  {
+   "id": "seed-0007",
+   "question": "Does anyone get up to sing?",
+   "type": "yesno",
+   "createdBy": "Casey",
+   "createdAt": 1800000007000,
+   "votes": {
+    "Taylor": "no",
+    "Quinn": "yes",
+    "Riley": "yes",
+    "Alex": "yes",
+    "Jordan": "no"
+   }
+  },
+  {
+   "id": "seed-0008",
+   "question": "Does anybody order the spiciest thing on the menu?",
+   "type": "yesno",
+   "createdBy": "Sam",
+   "createdAt": 1800000008000,
+   "votes": {
+    "Sam": "no",
+    "Alex": "no",
+    "Jordan": "yes",
+    "Quinn": "yes",
+    "Riley": "yes",
+    "Jamie": "yes",
+    "Drew": "yes",
+    "Casey": "yes",
+    "Taylor": "no"
+   }
+  },
+  {
+   "id": "seed-0009",
+   "question": "Does anyone miss their Sunday flight?",
+   "type": "yesno",
+   "createdBy": "Jordan",
+   "createdAt": 1800000009000,
+   "votes": {
+    "Jamie": "no",
+    "Jordan": "yes",
+    "Quinn": "yes",
+    "Taylor": "yes",
+    "Casey": "yes",
+    "Sam": "yes",
+    "Riley": "no",
+    "Alex": "no",
+    "Drew": "yes"
+   }
+  },
+  {
+   "id": "seed-0010",
+   "question": "Total rides taken by the group all weekend",
+   "type": "number",
+   "createdBy": "Jordan",
+   "createdAt": 1800000010000,
+   "votes": {
+    "Sam": 33,
+    "Quinn": 97,
+    "Alex": 93,
+    "Casey": 53,
+    "Jordan": 35
+   }
+  },
+  {
+   "id": "seed-0011",
+   "question": "Is a plan changed before Saturday lunch?",
+   "type": "yesno",
+   "createdBy": "Alex",
+   "createdAt": 1800000011000,
+   "votes": {
+    "Jamie": "no",
+    "Casey": "yes",
+    "Jordan": "yes",
+    "Morgan": "yes",
+    "Alex": "yes",
+    "Sam": "no",
+    "Drew": "no",
+    "Riley": "no",
+    "Taylor": "yes"
+   }
+  },
+  {
+   "id": "seed-0012",
+   "question": "Who is first asleep on Friday?",
+   "type": "person",
+   "createdBy": "Sam",
+   "createdAt": 1800000012000,
+   "votes": {
+    "Jordan": "Jordan",
+    "Casey": "Sam",
+    "Morgan": "Morgan",
+    "Drew": "Jordan",
+    "Taylor": "Jamie"
+   }
+  },
+  {
+   "id": "seed-0013",
+   "question": "Does it rain on the Saturday activity?",
+   "type": "yesno",
+   "createdBy": "Casey",
+   "createdAt": 1800000013000,
+   "votes": {
+    "Quinn": "yes",
+    "Jordan": "no",
+    "Alex": "yes",
+    "Jamie": "no",
+    "Riley": "no",
+    "Drew": "yes",
+    "Casey": "yes",
+    "Taylor": "yes",
+    "Morgan": "no"
+   }
+  }
+ ],
+ "superlativesSeededAt": null
+}
