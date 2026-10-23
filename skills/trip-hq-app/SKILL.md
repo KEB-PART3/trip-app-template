@@ -72,6 +72,8 @@ Open-Meteo: free, no key. Proxy it through a Pages Function with a TTL cache (or
 
 Classify each day by a priority cascade — storm > hot > rain > warm > nice > meh — and give it a plain-language verdict instead of a condition label. Pick the phrase deterministically by hashing the date; **never `Math.random()`**, or it reshuffles on every re-render and reads as a bug. One classification drives both the text colour and the card trim.
 
+**The verdict slot is worth more than a joke.** Its best use is saying what the group would *do differently* that day. A ski trip built on this pattern replaced the categories with *Flat light*, *Goggles: yellow*, *Rain low down* and *Slush by noon* — flat light changes whether you ski trees or groomers, where "Grey but fine" changes nothing. Same mechanism, same colours, far more useful. Ask what the weather actually changes about this trip; fall back on funny only when nothing qualifies.
+
 *Live specimens: [`docs/03-weather.html`](../../docs/03-weather.html)*
 
 ### 5. Predictions, never scored

@@ -14,7 +14,7 @@ export function copyText(text) {
       return
     }
     // execCommand is synchronous and still the only option on a few old
-    // Android WebViews. Nobody in this league is on one, but it costs 8 lines.
+    // Android WebViews. Nobody is likely on one, but it costs 8 lines.
     const ta = document.createElement('textarea')
     ta.value = text
     ta.setAttribute('readonly', '')

@@ -29,7 +29,7 @@ Nothing in the sample data is real.
 | Path | What |
 |---|---|
 | `src/App.jsx` | The shell: six tabs, no router, theme, scroll policy |
-| `src/constants.js` | **Start here.** Itinerary, roster, flights, league history — all the content |
+| `src/constants.js` | **Start here.** Itinerary, roster, flights, past trips — all the content |
 | `src/pages/Itinerary.jsx` | The day view: time gutter, three card shapes, NOW/NEXT |
 | `src/pages/Props.jsx` | Prop bets: add, vote, filter, delete |
 | `src/pages/Lore.jsx` | Past trips, static |

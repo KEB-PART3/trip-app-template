@@ -2,9 +2,19 @@ import { useEffect, useState } from 'react'
 import { getWeather } from '../api.js'
 import { TRIP_DATES, describeWeather } from '../constants.js'
 
-// A cheeky one-liner for the conditions. Storms outrank heat outranks rain, so the card
-// leads with the nastiest thing about the day. Pick is deterministic per day (hashed off
-// the date) so it doesn't reshuffle on every re-render.
+// A one-liner for the conditions. Storms outrank heat outranks rain, so the card
+// leads with the nastiest thing about the day. Pick is deterministic per day (hashed
+// off the date) so it doesn't reshuffle on every re-render.
+//
+// Write these in your group's voice — but the slot is worth more than a joke. The
+// best version says what to DO differently that day, which only you know because
+// only you know what the trip is. A ski trip's categories earn their keep:
+//
+//   meh:  ['Flat light', 'Grey day', 'Goggles: yellow']
+//   rain: ['Rain low down', 'Slush by noon']
+//
+// "Flat light" changes whether you ski trees or groomers. "Grey but fine" changes
+// nothing. Reach for funny when nothing actionable applies, not first.
 const VERDICTS = {
   storm: ['Ark weather', 'Biblical', 'Poncho o’clock', 'Gonna get wet', 'Bring the jacket'],
   hot:   ['Properly hot', 'Scorcher', 'Shade weather', 'Surface of the sun'],

@@ -17,7 +17,7 @@ import { copyText } from '../copy.js'
 // Nothing here can delay the hand-off: writeText() returns a promise we never
 // await, so the browser follows the href on the same tick it always would. The
 // execCommand fallback is synchronous but only runs on browsers with no
-// clipboard API at all, which is nobody in this league.
+// clipboard API at all, which is essentially nobody.
 //
 // It copies COORDINATES, not the street address. A street address often
 // geocodes to the front of a building, which can be the wrong side; the

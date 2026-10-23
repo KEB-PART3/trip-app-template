@@ -119,7 +119,7 @@ function Numbers({ predictions }) {
   const beer = regular.find(p => p.type === 'number' && /beer/i.test(p.question) && Object.keys(p.votes).length)
   if (beer) {
     const vals = Object.values(beer.votes).map(Number)
-    stats.push([String(Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)), 'official league beer estimate (avg of your guesses)'])
+    stats.push([String(Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)), 'group estimate (average of your guesses)'])
     const boldest = Object.entries(beer.votes).sort((a, b) => b[1] - a[1])[0]
     stats.push([String(boldest[1]), `boldest beer guess (${boldest[0]}, obviously)`])
   }

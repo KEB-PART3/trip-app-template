@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MEMBERS, ORGANIZER } from '../constants.js'
 import { addPrediction, votePrediction, deletePrediction } from '../api.js'
 
-// Props — party prop bets. Instant submissions (3/day each, server-enforced),
+// Predictions — light-hearted group bets. Instant submissions (3/day each, server-enforced),
 // Organiser-or-author delete, votes changeable any time, no scoring: the picks
 // ARE the product; the arguing happens in person.
 export default function Props({ state, onRefresh, nick }) {
@@ -10,7 +10,7 @@ export default function Props({ state, onRefresh, nick }) {
   const [adding, setAdding] = useState(false)
   // 'all' | 'todo' | 'mine' — todo = props this phone hasn't answered yet (a
   // voted card leaves the list immediately); mine = props you wrote, for
-  // checking how the league is responding to them.
+  // checking how the group is responding to them.
   const [filter, setFilter] = useState('all')
   const todo = props.filter(p => p.votes[nick] === undefined)
   const mine = props.filter(p => p.createdBy === nick)
@@ -138,7 +138,7 @@ export function PropCard({ p, nick, onRefresh, showBy = true }) {
       </div>
       {/* Every prop wears its author — including your own (tested with a
           sample prop; the author expects to see their name). Only the Morning
-          After hides bylines (showBy): awards belong to the league. */}
+          After hides bylines (showBy): awards belong to the group. */}
       {showBy && <div className="prop-by">by {p.createdBy}</div>}
 
       {p.type === 'person' ? (
@@ -272,7 +272,7 @@ function TextVote({ p, mine, busy, vote, entries }) {
 }
 
 // After the passphrase, every phone picks who it belongs to. Honor system —
-// same trust model as the rest of the league.
+// same trust model as the rest of the app.
 export function NickPicker({ onPick }) {
   return (
     <div className="login-wrap">
@@ -283,7 +283,7 @@ export function NickPicker({ onPick }) {
         </div>
         {/* Alphabetical by nick, filling left-to-right then down — ten names with
             no natural order, so scanning beats hunting. Sorted here only; MEMBERS
-            keeps its league order for Lore and everywhere else. */}
+            keeps its roster order for Past trips and everywhere else. */}
         <div className="member-grid">
           {[...MEMBERS].sort((a, b) => a.nick.localeCompare(b.nick)).map(m => (
             <button key={m.nick} className="member-btn" onClick={() => onPick(m.nick)}>

@@ -14,7 +14,7 @@ Ten friends, a rented house in the city, four days, a fantasy draft in the middl
 
 It lived at a private URL behind a shared passphrase, installed to everyone's home screen like a real app, and ran on a Mac mini in a closet.
 
-**It is not a fantasy football app.** There's no roster, no scoring, no player database, no league sync. It's a *trip* app that happens to have a draft in it. If your friend is building something for a league season rather than a weekend, roughly half of this transfers and the other half doesn't.
+**It is a trip app, not a scoring or league app.** There is no standings table and nothing is ever resolved — the predictions exist to be argued about, not settled.
 
 ---
 
@@ -509,7 +509,7 @@ Number props render everyone's guess sorted high to low, with yours marked:
 
 **Anonymous voting would have killed it.** The names are the content — the whole feature is a machine for generating "wait, *you* said no?"
 
-Every prop also wears its author (`by {createdBy}`), including your own. That was checked deliberately: the author posted a test prop and expected to see his own name on it. The one exception is the Morning After's awards, which hide bylines via a `showBy` prop — *awards belong to the league.*
+Every prop also wears its author (`by {createdBy}`), including your own. That was checked deliberately: the author posted a test prop and expected to see his own name on it. The one exception is the Morning After's awards, which hide bylines via a `showBy` prop — *awards belong to the group.*
 
 #### Filtering
 
@@ -732,7 +732,7 @@ Four things here are worth taking.
 
 **`FF_SUNDAY=1` forces the unlock for testing**, because otherwise the only way to check a date-triggered feature is to wait for the date or mangle the clock.
 
-On the day they render as ordinary prop cards with `showBy={false}` — **bylines hidden, because awards belong to the league** — under the heading *"🏅 Sunday Superlatives — vote before wheels up"* and a footnote: *"One vote each · results read aloud at the house · appeals denied."*
+On the day they render as ordinary prop cards with `showBy={false}` — **bylines hidden, because awards belong to the group** — under the heading *"🏅 Sunday Superlatives — vote before wheels up"* and a footnote: *"One vote each · results read aloud at the house · appeals denied."*
 
 #### Tallying the winners
 
@@ -782,7 +782,7 @@ const contested = regular
 
 `Math.abs(2*yes - total)` is the distance from a perfect split — zero when it's dead even. Sort ascending, break ties by turnout, and you've found the argument of the weekend.
 
-**The boldest guess** on a number prop (highest value, with the name attached), alongside the average presented as the *"official league beer estimate."*
+**The boldest guess** on a number prop (highest value, with the name attached), alongside the average presented as a *"group estimate."*
 
 **Most engaged prophet** and, if anyone cast zero votes, **"the ghost 👻"**. Both are a single tally over `votes` keyed by nick.
 
